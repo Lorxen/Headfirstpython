@@ -1,12 +1,12 @@
 body {
     font-family:      Verdana, Geneva, Arial, sans-serif;
     font-size:        medium;
-    background-color: tan;
+    background-color: rgba(123, 192, 194, 0.607);
     margin-top:       5%;
     margin-bottom:    5%;
     margin-left:      10%;
     margin-right:     10%;
-    border:           1px dotted gray;
+    border:           1px solid rgb(0, 0, 0);
     padding:          10px 10px 10px 10px;
   }
   a {
@@ -30,7 +30,7 @@ body {
   }
   td, th {
     padding:          5px;
-    text-align:       left;
+    text-align:       center;
   }
   .copyright {
     font-size:        75%;
@@ -48,15 +48,15 @@ body {
   
   table {
   font-size:          1em;
-  background-color:   #fafcff;
-  border:             1px solid #909090;
-  color:              #2a2a2a;
+  background-color:   #b8c2c3;
+  border:             1px solid #000000;
+  color:              #000000;
   padding:            5px 5px 2px;
   border-collapse:    collapse;
   }
   
   td, th {
-  border:             thin dotted gray;
+  border:             thin solid rgb(0, 0, 0);
   }
   
   /*** Inputs ***/
