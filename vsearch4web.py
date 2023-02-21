@@ -5,9 +5,25 @@ app = Flask(__name__)
 
 
 def log_request(req: 'flask_request', res: str):
-    with open('vsearch.log', 'a') as write:
-        print(req.form, req.remote_addr,
-              req.user_agent, res, file=write, sep='|')
+    dbconfig = {'host': '127.0.0.1',
+                'user': 'vsearch',
+                'password': 'vsearchpasswd',
+                'database': 'vsearchlogDB', }
+    import mysql.connector
+    conn = mysql.connector.connect(**dbconfig)
+    cursor = conn.cursor()
+    _SQL = '''insert into log
+            (phrase, letters, ip, browser_string, results)
+            values
+            (%s,%s,%s,%s,%s)'''
+    cursor.execute(_SQL, (req.form['phrase'],
+                          req.form['letters'],
+                          req.remote_addr,
+                          req.headers.get('User_agent'),
+                          res, ))
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 
 @app.route('/search4', methods=['POST'])
