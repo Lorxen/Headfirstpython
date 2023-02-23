@@ -23,10 +23,10 @@ def log_request(req: 'flask_request', res: str) -> None:
                 values
                 (%s,%s,%s,%s,%s)'''
         cursor.execute(_SQL, (req.form['phrase'],
-                            req.form['letters'],
-                            req.remote_addr,
-                            req.headers.get('User_Agent'),
-                            res, ))
+                              req.form['letters'],
+                              req.remote_addr,
+                              req.headers.get('User_Agent'),
+                              res, ))
 
 
 # Configure the /search4 with POST method and get the request data
@@ -40,7 +40,7 @@ def do_search():
     return render_template('results.html', the_phrase=phrase, the_letters=letters, the_title=title, the_results=results)
 
 
-# Configure the default page of the web to go to /enty 
+# Configure the default page of the web to go to /enty
 @app.route('/')
 @app.route('/entry')
 def entry_page():
@@ -57,11 +57,13 @@ def view_the_log() -> 'html':
         contents = cursor.fetchall()
         titles = ('Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results')
         return render_template('viewlog.html',
-                                the_title='View Log',
-                                the_row_titles=titles,
-                                the_data=contents,)
+                               the_title='View Log',
+                               the_row_titles=titles,
+                               the_data=contents,)
 
 # Configure page to see stadistics of the web
+
+
 @app.route('/stadist')
 def stadistics() -> 'html':
     with UseDataBase(app.config['dbconfig']) as cursor:
@@ -86,12 +88,13 @@ def stadistics() -> 'html':
                 limit 1'''
         cursor.execute(_SQL)
         details[-1].append(cursor.fetchall())
-   
+
         titles = ('Num Of Requests', 'Most Searched letters', 'Ip', 'Browser')
-        return render_template('viewlog.html', 
-                                the_title='Stadistics', 
-                                the_row_titles=titles,
-                                the_data=tuple(details),)
+        return render_template('viewlog.html',
+                               the_title='Stadistics',
+                               the_row_titles=titles,
+                               the_data=tuple(details),)
+
 
 # Only run in debugg mode if execute from local computer
 if __name__ == '__main__':
