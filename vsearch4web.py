@@ -1,10 +1,15 @@
-from flask import Flask, render_template, request, escape
+from flask import Flask, render_template, request, session
 from search4letters import search4letters
+
+from checker import check_logged_in
 from DBcm import UseDataBase
 
 
 # Initialize flask
 app = Flask(__name__)
+
+# Give flask a passw to encrypt cookies
+app.secret_key = 'SuperHardPasswordToGuess'
 
 
 # Add a base configuration to the flask app
@@ -12,6 +17,20 @@ app.config['dbconfig'] = {'host': '127.0.0.1',
                           'user': 'vsearch',
                           'password': 'vsearchpasswd',
                           'database': 'vsearchlogDB', }
+
+
+# Do the loggin to get access to the /viewlog and /stadist
+@app.route('/login')
+def logg_in():
+    session['logged_in'] = True
+    return 'You are now logged in.'
+
+
+# Do the loggout to the web
+@app.route('/logout')
+def logg_out():
+    session.pop('logged_in')
+    return 'You are now logged out.'
 
 
 # Log details of the web request and the results
@@ -49,6 +68,7 @@ def entry_page():
 
 # Configure the /viewlog page to display the database information
 @app.route('/viewlog')
+@check_logged_in
 def view_the_log() -> 'html':
     with UseDataBase(app.config['dbconfig']) as cursor:
         _SQL = '''select phrase, letters, ip, browser_string, results
@@ -61,10 +81,10 @@ def view_the_log() -> 'html':
                                the_row_titles=titles,
                                the_data=contents,)
 
+
 # Configure page to see stadistics of the web
-
-
 @app.route('/stadist')
+@check_logged_in
 def stadistics() -> 'html':
     with UseDataBase(app.config['dbconfig']) as cursor:
         details = []

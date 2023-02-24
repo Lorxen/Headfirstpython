@@ -1,12 +1,14 @@
 import mysql.connector
 
 # DataBase class to configurate the SQL and use it with 'with'
+
+
 class UseDataBase:
 
-    def __init__(self, config:dict) -> None:
+    def __init__(self, config: dict) -> None:
         # Store the data base configuration to self
         self.configuration = config
-    
+
     def __enter__(self) -> 'cursor':
         # Initialize the cursor to use the database SQL
         self.conn = mysql.connector.connect(**self.configuration)
